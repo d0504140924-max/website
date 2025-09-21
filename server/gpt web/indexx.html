@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ניהול מערכת — דף מנהל (דמו לפי server_abstract)</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>דף מנהל — חיבור ישיר ל־API</h1>
+    <div class="inline-settings">
+      <label>בסיס API
+        <input id="baseUrl" type="text" value="http://127.0.0.1:5000" />
+      </label>
+      <label>אסימון (אופציונלי)
+        <input id="token" type="password" placeholder="manager-token" />
+      </label>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>בחרי פעולת API</h2>
+      <p class="muted">הרשימה תואמת את המסלולים שמוגדרים בקובץ ה־שרת שלך.</p>
+      <div class="grid-2">
+        <label>מסלול
+          <select id="routeSelect"></select>
+        </label>
+        <label>שיטה
+          <input id="methodBox" type="text" disabled />
+        </label>
+      </div>
+
+      <div id="paramFields" class="fields"></div>
+
+      <div class="toggles">
+        <label class="row">
+          <input id="useRawJSON" type="checkbox" />
+          שימוש ב־JSON גולמי (ל־POST) במקום שדות
+        </label>
+      </div>
+
+      <textarea id="rawJSON" class="hidden" placeholder='{"item_id": "123", "new_price": 49.9}'></textarea>
+
+      <div class="btns">
+        <button id="sendBtn" class="primary">שלחי בקשה</button>
+        <button id="clearBtn" class="ghost">ניקוי</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>תוצאה</h2>
+      <pre id="output" class="output">{ }</pre>
+    </section>
+
+    <section class="card">
+      <details>
+        <summary>הסבר קצר — איך הדף בנוי</summary>
+        <ol>
+          <li>בחלק העליון מגדירים בסיס API ואסימון (אם יש אימות).</li>
+          <li>בוחרים מסלול/שיטה מהרשימה — השדות נבנים אוטומטית לפי פעולה.</li>
+          <li>ב־POST אפשר למלא בשדות <strong>או</strong> לעבור ל־JSON גולמי (לימודי ונוח לניסויים).</li>
+          <li>לוחצים “שלחי בקשה” ורואים את תשובת השרת (כולל status ו־URL). 🎯</li>
+        </ol>
+        <p class="muted">את שמות הפרמטרים הנחתי בצורה הגיונית; ניתן לשנות בקלות ברשימת ההגדרות ב־<code>app.js</code> כדי להתאים בדיוק לצד השרת שלך.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

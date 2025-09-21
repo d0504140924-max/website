@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+    <head>
+        <meta charset="utf-8">
+        <title>{{title}}</title>
+    </head>
+    <body>
+        <h1>{{title}}</h1>
+        <p>welcome to my first page in flask</p>
+
+        <h2>שמות נבחרים</h2>
+        <ul>
+            {% for name in items%}
+                <li>{{name}}</li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>

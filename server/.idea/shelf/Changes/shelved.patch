@@ -1,0 +1,20 @@
+Index: text
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/text b/text
+new file mode 100644
+--- /dev/null	(date 1758106412998)
++++ b/text	(date 1758106412998)
+@@ -0,0 +1,10 @@
++main page
++show all inventory
++show one category
++show item's ditailes
++change price
++add item
++remove item
++show the money status
++deposit money
++withdraw money
