@@ -1,0 +1,14 @@
+/client_side/.idea/
+/.idea/
+/.venv/
+/.venv1/
+
+/client_side/.venv/
+/data/
+/server/.idea/
+/server/.venv/
+/src/.idea/
+/src/.venv/
+/src/website.egg-info/
+/src/website_shope.egg-info/
+/website.egg-info/
