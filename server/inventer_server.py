@@ -125,9 +125,10 @@ def create_app_inv(executor):
 
 if __name__ == "__main__":
 
-    product = Product('p1', 'clothes', 'shirt', 'zara', 60.0, 37.0)
+    product = Product('p2', 'clothes', 'shirt', 'zara', 60.0, 37.0)
     inventory = TheInventory('inventory.json', 'items.json')
-    TheInventory.add_item(inventory, product, 2)
+    #TheInventory.add_item(inventory, product, 2)
+    TheInventory.remove_item(inventory, product, 2)
     executor = InventoryExecutor(product, inventory)
     app = create_app_inv(executor)
     app.run(debug=True, port=5000)

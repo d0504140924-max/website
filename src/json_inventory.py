@@ -86,19 +86,19 @@ class TheInventory(InventoryManage):
         if not any(item.id in d for d in data):
             data.append({item.id:num})
             self.save_file(self.inventory_path, data)
-        if not item.id in self.items:
-            data = self.items
+        data = self.items
+        if not any(item.id in d for d in data):
             data.append(item.__dict__)
             self.save_file(self.items_path, data)
 
 
     def remove_item(self, item: Product, num=1):
-        if item in self.inventory:
-            data = self.inventory
+        data = self.inventory
+        if not any(item.id in d for d in data):
             data.remove(item)
             self.save_file(self.inventory_path, data)
-        if item in self.items:
-            data = self.items
+        data = self.items
+        if not any(item.id in d for d in data):
             data.remove(item.__dict__)
             self.save_file(self.items_path, data)
 
