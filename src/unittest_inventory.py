@@ -2,9 +2,9 @@ import unittest
 import json
 import os
 
-from src.json_inventory import TheInventory
-from src.product import Product
-from inventory_abstract import InventoryManage
+from website.src.json_inventory import TheInventory
+from website.src.product import Product
+from website.src.InventoryManage_interface import InventoryManage
 
 
 

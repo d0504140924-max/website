@@ -1,7 +1,7 @@
 import json
 import os
-from src.inventory_abstract import InventoryManage
-from src.product import Product
+from website.src.InventoryManage_interface import InventoryManage
+from website.src.product import Product
 
 
 class TheInventory(InventoryManage):
@@ -95,7 +95,7 @@ class TheInventory(InventoryManage):
     def remove_item(self, item: Product, num=1):
         data = self.inventory
         if not any(item.id in d for d in data):
-            data.remove(item)
+            data.remove(item.id)
             self.save_file(self.inventory_path, data)
         data = self.items
         if not any(item.id in d for d in data):

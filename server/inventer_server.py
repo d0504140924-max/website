@@ -1,6 +1,7 @@
-from flask import Flask, request, jsonify
-from src.product import Product
-from src.json_inventory import TheInventory
+from flask import request, jsonify, Flask
+from website.src.product import Product
+from website.src.json_inventory import TheInventory
+
 
 class InventoryExecutor:
 
@@ -57,9 +58,8 @@ class InventoryExecutor:
         except Exception as e:
             raise NotImplementedError
 
+def register_routs_inv(app, executor):
 
-def create_app_inv(executor):
-    app = Flask(__name__)
 
 
     @app.get("/api/ShowAll")
@@ -118,18 +118,8 @@ def create_app_inv(executor):
         return ({"ok": True, "data":data2}), 200
 
 
-    return app
 
 
 
 
-if __name__ == "__main__":
-
-    product = Product('p2', 'clothes', 'shirt', 'zara', 60.0, 37.0)
-    inventory = TheInventory('inventory.json', 'items.json')
-    #TheInventory.add_item(inventory, product, 2)
-    TheInventory.remove_item(inventory, product, 2)
-    executor = InventoryExecutor(product, inventory)
-    app = create_app_inv(executor)
-    app.run(debug=True, port=5000)
 

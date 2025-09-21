@@ -59,3 +59,14 @@ def create_app_money(executor):
         pass
 
     return app
+
+
+if __name__ == '__main__':
+    product = Product('p2', 'clothes', 'shirt', 'zara', 60.0, 37.0)
+    inventory = TheInventory('inventory.json', 'items.json')
+    #TheInventory.add_item(inventory, product, 2)
+    #TheInventory.remove_item(inventory, product, 2)
+    TheInventory.update_amount(inventory, product, 10)
+    executor = InventoryExecutor(product, inventory)
+    app = register_routs_inv(executor)
+    app.run(debug=True, port=5000)
