@@ -12,7 +12,7 @@ class InventoryManage(ABC):
 
 
     @abstractmethod
-    def remove_item(self, item, num=1):
+    def remove_item(self, item):
         pass
 
 
