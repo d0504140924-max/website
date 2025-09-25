@@ -9,6 +9,14 @@ class MoneyManagerAbc(ABC):
         pass
 
     @abstractmethod
+    def purchase(self, amount: float):
+        pass
+
+    @abstractmethod
+    def sale(self, amount: float):
+        pass
+
+    @abstractmethod
     def withdraw(self, amount: float):
         pass
 
@@ -21,5 +29,5 @@ class MoneyManagerAbc(ABC):
         pass
 
     @abstractmethod
-    def month_report(self, month: int):
+    def month_report(self, month: int, year: int):
         pass
