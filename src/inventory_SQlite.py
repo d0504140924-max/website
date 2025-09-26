@@ -1,4 +1,4 @@
-from website.src.InventoryManage_interface import InventoryManage
+from website.src.inventory_interface import InventoryManage
 from website.src.product import Product
 import sqlite3
 

@@ -9,14 +9,6 @@ class MoneyManagerAbc(ABC):
         pass
 
     @abstractmethod
-    def purchase(self, amount: float):
-        pass
-
-    @abstractmethod
-    def sale(self, amount: float):
-        pass
-
-    @abstractmethod
     def withdraw(self, amount: float):
         pass
 

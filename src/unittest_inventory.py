@@ -4,7 +4,7 @@ import os
 
 from website.src.json_inventory import TheInventory
 from website.src.product import Product
-from website.src.InventoryManage_interface import InventoryManage
+from website.src.inventory_interface import InventoryManage
 
 
 

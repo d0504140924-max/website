@@ -9,7 +9,7 @@ class MoneyManage(MoneyManagerAbc):
     def __init__(self, db_path):
 
         self.db_path = db_path
-        self.time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
 
     @property
     def db_path(self):
@@ -28,63 +28,58 @@ class MoneyManage(MoneyManagerAbc):
             amount REAL NOT NULL,
             current_amount REAL NOT NULL
             )''')
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_ledger_date ON ledger(date)")
             conn.commit()
 
     def deposit(self, amount: float):
         with sqlite3.connect(self.db_path) as conn:
             cur = conn.cursor()
-            self.time  = getattr(self, "time", None) or datetime.now().strftime("%d-%m-%Y %H:%M:%S")
-            cur.execute("""
+            time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            cur.execute("SELECT current_amount FROM ledger ORDER BY date DESC LIMIT 1")
+            row = cur.fetchone()
+            if row is None:
+                cur.execute("""
+                            INSERT INTO ledger (type, date, amount, current_amount)
+                            VALUES (?, ?, ?, ?)""", ('deposit', time, amount, amount))
+            else:
+                cur.execute("""
             INSERT INTO ledger (type, date, amount, current_amount)
-                             VALUES (?, ?, ?, ?)""",('deposit',self.time, amount, self.current_amount()))
+                             VALUES (?, ?, ?, ?)""",('deposit', time, amount, row[0] + amount))
             conn.commit()
 
-    def purchase(self, amount: float):
-        with sqlite3.connect(self.db_path) as conn:
-            cur = conn.cursor()
-            self.time = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
-            cur.execute("""
-                         INSERT INTO ledger (type, date, amount, current_amount)
-                         VALUES (?, ?, ?,?)""", ('purchase', self.time, amount, self.current_amount()))
-            conn.commit()
-
-    def sale(self, amount: float):
-        with sqlite3.connect(self.db_path) as conn:
-            cur = conn.cursor()
-            self.time = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
-            cur.execute("""
-                         INSERT INTO ledger (type, date, amount , current_amount)
-                         VALUES (?, ?, ?,?)""", ('sale',self.time, amount, self.current_amount()))
-            conn.commit()
 
     def withdraw(self, amount: float):
         with sqlite3.connect(self.db_path) as conn:
             cur = conn.cursor()
-            self.time = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
-            cur.execute("""
-            INSERT INTO ledger (type, date, amount, currtnt_amount) VALUES (?, ?, ?,?)""",
-                         ('withdraw',self.time, amount, self.current_amount()))
+            time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            cur.execute("SELECT current_amount FROM ledger ORDER BY date DESC LIMIT 1")
+            row = cur.fetchone()
+            if row is None:
+                cur.execute("""
+                            INSERT INTO ledger (type, date, amount, current_amount)
+                            VALUES (?, ?, ?, ?)""",
+                            ('withdraw', time, amount, -amount))
+            else:
+                cur.execute("""
+                    INSERT INTO ledger (type, date, amount, current_amount) VALUES (?, ?, ?,?)""",
+                         ('withdraw', time, amount, row[0] - amount))
             conn.commit()
 
     def current_amount(self):
         with sqlite3.connect(self.db_path) as conn:
             cur = conn.cursor()
-            cur.execute("""
-        SELECT
-            COALESCE(SUM(CASE WHEN type IN ('deposit', 'sale') THEN amount END), 0) AS inflow,
-            COALESCE(SUM(CASE WHEN type IN ('purchase', 'withdraw') THEN amount END), 0) AS outflow
-        FROM ledger""")
-            inflow, outflow = cur.fetchone()
-            inflow = float(inflow or 0.0)
-            outflow = float(outflow or 0.0)
-            current_amount = inflow - outflow
-            return current_amount
+            cur.execute("SELECT current_amount FROM ledger ORDER BY date DESC LIMIT 1")
+            row = cur.fetchone()
+            if row is None:
+                return 0
+            return row[0]
+
 
     def movements_record(self, type: str, start=None, end=None):
         if start is None:
-            start = '01-01-0001 00:00:00'
+            start = '0001-01-01 00:00:00'
         if end is None:
-            end = '31-12-9999 23:59:59'
+            end = '9999-12-31 23:59:59'
         with sqlite3.connect(self.db_path) as conn:
             cur = conn.cursor()
             cur.execute("""
@@ -101,14 +96,14 @@ class MoneyManage(MoneyManagerAbc):
             end_db = datetime(year + 1,1,1,0 ,0 ,0)
         else:
             end_db = datetime(year,month + 1,1, 0, 0, 0)
-        start = start_db.strftime('%d-%m-%Y %H:%M:%S')
-        end = end_db.strftime('%d-%m-%Y %H:%M:%S')
+        start = start_db.strftime('%Y-%m-%d %H:%M:%S')
+        end = end_db.strftime('%Y-%m-%d %H:%M:%S')
         with sqlite3.connect(self.db_path) as conn:
             cur = conn.cursor()
             cur.execute("""
             SELECT 
-            COALESCE(SUM(CASE WHEN type IN ('deposit', 'sale') THEN amount END), 0) AS inflow,
-            COALESCE(SUM(CASE WHEN type IN ('purchase', 'withdraw') THEN amount END), 0) AS outflow
+            COALESCE(SUM(CASE WHEN type IN ('deposit') THEN amount END), 0) AS inflow,
+            COALESCE(SUM(CASE WHEN type IN ('withdraw') THEN amount END), 0) AS outflow
             FROM ledger WHERE date >= ? AND date < ?""",(start, end))
             inflow, outflow = cur.fetchone()
             neto = inflow - outflow
