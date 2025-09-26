@@ -13,7 +13,7 @@ class ManagerAbc(ABC):
         pass
 
     @abstractmethod
-    def bay_item(self, item: Product, num: int=1):
+    def purchase_item(self, item: Product, num: int=1):
         pass
 
     @abstractmethod

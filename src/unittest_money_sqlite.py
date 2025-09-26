@@ -1,5 +1,5 @@
 import unittest
-from website.src.money_manage_SQlite import MoneyManage
+from website.src.money_SQlite import MoneyManage
 from datetime import datetime
 import sqlite3
 
