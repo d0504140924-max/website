@@ -7,7 +7,6 @@ class MoneyManage(MoneyManagerAbc):
 
 
     def __init__(self, db_path):
-
         self.db_path = db_path
 
 
@@ -35,8 +34,7 @@ class MoneyManage(MoneyManagerAbc):
         with sqlite3.connect(self.db_path) as conn:
             cur = conn.cursor()
             time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            cur.execute("SELECT current_amount FROM ledger ORDER BY date DESC LIMIT 1")
-            row = cur.fetchone()
+            row = self.current_amount()
             if row is None:
                 cur.execute("""
                             INSERT INTO ledger (type, date, amount, current_amount)
@@ -52,8 +50,7 @@ class MoneyManage(MoneyManagerAbc):
         with sqlite3.connect(self.db_path) as conn:
             cur = conn.cursor()
             time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            cur.execute("SELECT current_amount FROM ledger ORDER BY date DESC LIMIT 1")
-            row = cur.fetchone()
+            row = self.current_amount()
             if row is None:
                 cur.execute("""
                             INSERT INTO ledger (type, date, amount, current_amount)

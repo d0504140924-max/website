@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 from product import Product
+from website.src.person import Person
 
-class ManagerAbc(ABC):
+class ManagerAbc(ABC, Person ):
 
 
     @abstractmethod
