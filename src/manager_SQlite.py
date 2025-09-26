@@ -46,9 +46,10 @@ class Manager(ManagerAbc):
 
 
     def purchase_item(self, item: Product, num: int=1):
-        self.inventory.add_item(item, num)
+        self.inventory.add_item(item)
         self.inventory.update_amount(item.id, num)
-        self.money.withdraw(item.cost)
+        self.money.withdraw(item.cost * num)
+
 
     def change_price(self, item_id: str, new_price):
         with sqlite3.connect(self.db_path) as conn:

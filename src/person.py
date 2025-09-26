@@ -26,7 +26,7 @@ class Person:
     @id.setter
     def id(self, new_id):
         assert isinstance(new_id, str)
-        self.id = new_id
+        self._id = new_id
 
 
     @property
@@ -35,7 +35,7 @@ class Person:
     @first_name.setter
     def first_name(self, new_name):
         assert isinstance(new_name, str)
-        self.first_name = new_name
+        self._first_name = new_name
 
 
     @property
@@ -44,7 +44,7 @@ class Person:
     @last_name.setter
     def last_name(self, new_last_name):
         assert isinstance(new_last_name, str)
-        self.last_name = new_last_name
+        self._last_name = new_last_name
 
 
     @property
@@ -52,17 +52,17 @@ class Person:
         return self._age
     @age.setter
     def age(self, new_age):
-        assert isinstance(new_age, str)
-        self.age = new_age
+        assert isinstance(new_age, int)
+        self._age = new_age
 
     @property
-    def all_birthday(self):
-        return (f"{self._birthday['day']:02d}-{self._birthday['month']:02d}-{self._birthday['year']:02d}")
-    @all_birthday.setter
-    def all_birthday(self, new_birthday):
+    def birthday(self):
+        return self._birthday
+    @birthday.setter
+    def birthday(self, new_birthday):
         assert isinstance(new_birthday, dict)
         assert all(i in new_birthday for i in ['year', 'month', 'day'])
-        self.all_birthday = new_birthday
+        self._birthday = new_birthday
 
 
     @property
@@ -72,7 +72,7 @@ class Person:
     def phone_number(self, new_number):
         if new_number is not None:
             assert isinstance(new_number, str)
-        self.phone_number = new_number
+        self._phone_number = new_number
 
 
     @property
@@ -82,7 +82,7 @@ class Person:
     def email(self, new_email):
         if new_email is not None:
             assert isinstance(new_email, str)
-        self.email = new_email
+        self._email = new_email
 
 
 

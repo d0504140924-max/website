@@ -35,14 +35,14 @@ class MoneyManage(MoneyManagerAbc):
             cur = conn.cursor()
             time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             row = self.current_amount()
-            if row is None:
+            if row == 0:
                 cur.execute("""
                             INSERT INTO ledger (type, date, amount, current_amount)
                             VALUES (?, ?, ?, ?)""", ('deposit', time, amount, amount))
             else:
                 cur.execute("""
             INSERT INTO ledger (type, date, amount, current_amount)
-                             VALUES (?, ?, ?, ?)""",('deposit', time, amount, row[0] + amount))
+                             VALUES (?, ?, ?, ?)""",('deposit', time, amount, float(row) + amount))
             conn.commit()
 
 
@@ -51,7 +51,7 @@ class MoneyManage(MoneyManagerAbc):
             cur = conn.cursor()
             time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             row = self.current_amount()
-            if row is None:
+            if row == 0:
                 cur.execute("""
                             INSERT INTO ledger (type, date, amount, current_amount)
                             VALUES (?, ?, ?, ?)""",
@@ -59,7 +59,7 @@ class MoneyManage(MoneyManagerAbc):
             else:
                 cur.execute("""
                     INSERT INTO ledger (type, date, amount, current_amount) VALUES (?, ?, ?,?)""",
-                         ('withdraw', time, amount, row[0] - amount))
+                         ('withdraw', time, amount, float(row) - amount))
             conn.commit()
 
     def current_amount(self):
@@ -69,7 +69,7 @@ class MoneyManage(MoneyManagerAbc):
             row = cur.fetchone()
             if row is None:
                 return 0
-            return row[0]
+            return float(row[0])
 
 
     def movements_record(self, type: str, start=None, end=None):

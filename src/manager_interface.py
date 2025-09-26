@@ -10,10 +10,6 @@ class ManagerAbc(ABC, Person ):
         pass
 
     @abstractmethod
-    def sale_item(self, item: Product, num: int=1):
-        pass
-
-    @abstractmethod
     def purchase_item(self, item: Product, num: int=1):
         pass
 
