@@ -73,9 +73,6 @@ class CommendExecutor:
     def withdraw_money(self, commend: dict):
         raise NotImplementedError
 
-    def get_item_amount(self, id: str):
-        items = self.inventory.items
-        return [p for p in items if p.get('_id') == id]
 
 
     def month_report(self):

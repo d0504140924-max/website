@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 class InventoryManage(ABC):
 
     @abstractmethod
-    def get_amount(self, item):
+    def get_item_amount(self, item):
         pass
 
 

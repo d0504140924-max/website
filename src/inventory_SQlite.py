@@ -46,7 +46,7 @@ class TheInventory(InventoryManage):
 
 
 
-    def get_amount(self, id_item: str):
+    def get_item_amount(self, id_item: str):
         with sqlite3.connect(self.db_path) as conn:
             cur = conn.cursor()
             cur.execute("""
@@ -68,15 +68,15 @@ class TheInventory(InventoryManage):
                     (item.id, num))
             conn.commit()
 
-    def remove_item(self, item: Product):
+    def remove_item(self, item_id: str):
         with sqlite3.connect(self.db_path) as conn:
             cur = conn.cursor()
             cur.execute("""
             DELETE FROM products WHERE id=?""",
-                    (item.id,))
+                    (item_id,))
             cur.execute("""
                     DELETE FROM inventory WHERE product_id = ?""",
-                    (item.id,))
+                    (item_id,))
             conn.commit()
 
 
@@ -114,6 +114,14 @@ class TheInventory(InventoryManage):
             SELECT name, price FROM products WHERE category = ?""",(category,))
             rows = cur.fetchall()
             return rows
+
+    def get_item_by_id(self, item_id: str):
+        with sqlite3.connect(self.db_path) as conn:
+            cur = conn.cursor()
+            cur.execute("""
+            SELECT * FROM products WHERE product_id = ?""",(item_id,))
+            _row = cur.fetchone()
+            return _row[0]
 
 
 

@@ -4,7 +4,7 @@ from website.src.inventory_interface import InventoryManage
 from website.src.product import Product
 
 
-class TheInventory(InventoryManage):
+class TheInventoryJ(InventoryManage):
 
     _inventory_path: str
     _items_path: str

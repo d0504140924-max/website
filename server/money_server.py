@@ -1,72 +1,52 @@
-from flask import Flask, request, jsonify
-from src.manager_Abc import ManagerAbc
+from flask import request
 
-
-class MoneyExecutor:
-
-
-    def change_price(self, commend: dict):
-        id = commend.get('id')
-        price = commend.get('price')
-        try:
-            self.manager.change_price(id, price)
-        except Exception as e:
-            raise NotImplementedError
-
-    def show_money_status(self):
-        pass
-
-    def deposit_money(self, commend: dict):
-        raise NotImplementedError
-
-    def withdraw_money(self, commend: dict):
-        raise NotImplementedError
-
-
-    def month_report(self):
-        pass
-
-    def movement_record(self):
-        pass
-
-def create_app_money(executor):
-    app = Flask(__name__)
-
-    @app.post('/api/ChangePrice')
-    def api_change_price():
-        pass
+def register_routes_money(app, executor):
 
     @app.get('/api/ShowMoneyStatus')
     def api_show_money_status():
-        pass
+        data = executor.current_amount()
+        return ({'ok': True, 'data': data}), 200
 
 
     @app.post('/api/DepositMoney')
     def api_deposit_money():
-        pass
+        try:
+            body = request.get_json(force=True) or {}
+            amount = float(body.get('amount', 0))
+            executor.deposit_money(float(amount))
+            return {'ok': True}, 200
+        except Exception as e:
+            return {'ok': False, 'message': str(e)}, 400
 
 
     @app.post('/api/WithdrawMoney')
     def api_withdraw_money():
-        pass
+        try:
+            body = request.get_json(force=True) or {}
+            amount = float(body.get('amount', 0))
+            executor.withdraw_money(amount)
+            return {'ok': True}, 200
+        except Exception as e:
+            return {'ok': False, 'message': str(e)}, 400
 
     @app.get('/api/MonthReport')
     def api_month_report():
-        pass
+        try:
+            month = request.args.get('month')
+            year = request.args.get('year')
+            data = executor.month_report(int(month), int(year))
+            return {'ok': True, 'data': data}, 200
+        except Exception as e:
+            return {'ok': False, 'message': str(e)}, 400
 
-    @app.get('/api/MovementRecord')
-    def api_movement_record():
-        pass
+    @app.get('/api/MovementsRecord')
+    def api_movements_record():
+        try:
+            start = request.args.get('start')
+            end = request.args.get('end')
+            data = executor.movements_record(start=start, end=end)
+            return {'ok': True, 'data': data}, 200
+        except Exception as e:
+            return {'ok': False, 'message': str(e)}, 400
 
-    return app
 
-
-if __name__ == '__main__':
-    product = Product('p2', 'clothes', 'shirt', 'zara', 60.0, 37.0)
-    inventory = TheInventory('inventory.json', 'items.json')
-    #TheInventory.add_item(inventory, product, 2)
-    #TheInventory.remove_item(inventory, product, 2)
-    TheInventory.update_amount(inventory, product, 10)
-    executor = InventoryExecutor(product, inventory)
-    app = register_routs_inv(executor)
-    app.run(debug=True, port=5000)
