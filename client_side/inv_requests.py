@@ -59,7 +59,9 @@ def req_add_item():
         "price": input("price: ").strip(),
         "cost": input("cost: ").strip()
     }
-    return posts("/AddItem", item)
+    amount = input("amount: ").strip()
+    payload = {'item': item, 'amount': amount}
+    return posts("/AddItem", payload)
 
 def req_remove_item():
     id = input("item_id:").strip()
