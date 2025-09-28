@@ -1,8 +1,9 @@
+from website.config import main_url
 import requests
 import json
 import sys
 
-base_url = "http://127.0.0.1:5000/api"
+
 time_out = 10
 
 
@@ -20,34 +21,34 @@ def handle_response(response: requests.Response):
 
 def gets(path, parameters=None):
     try:
-        return requests.get(f"{base_url}{path}", params=parameters, timeout=time_out)
+        return requests.get(f"{main_url}{path}", params=parameters, timeout=time_out)
     except requests.exceptions.RequestException as e:
         print(f"[GET {path}] Error:", e)
 
 def posts(path, payload=None, parameters=None):
     try:
-        return  requests.post(f"{base_url}{path}", json=payload, params=parameters, timeout=time_out)
+        return  requests.post(f"{main_url}{path}", json=payload, params=parameters, timeout=time_out)
     except requests.exceptions.RequestException as e:
         print(f"[POST {path}] Error:", e)
 
 
 
 def req_show_all():
-    return gets("/ShowAll")
+    return gets("ShowAll")
 
 def req_show_one_category():
     category = input("category:").strip()
-    return gets("/Category", parameters={"category": category})
+    return gets("Category", parameters={"category": category})
 
 
 def req_item_details():
     id = input("id:").strip()
-    return gets("/ItemDetails", parameters={"id": id})
+    return gets("ItemDetails", parameters={"id": id})
 
 
 def req_get_amount():
     id = input("id:").strip()
-    return gets("/GetAmount", parameters={"id": id})
+    return gets("GetAmount", parameters={"id": id})
 
 
 def req_add_item():
@@ -60,12 +61,12 @@ def req_add_item():
         "cost": input("cost: ").strip()
     }
     amount = int(input("amount: ").strip())
-    return posts("/AddItem", item , {'amount': amount})
+    return posts("AddItem", item , {'amount': amount})
 
 def req_remove_item():
     id = input("item_id:").strip()
     payload = {"item_id": id}
-    return posts("/RemoveItem", payload)
+    return posts("RemoveItem", payload)
 
 
 MENU = [

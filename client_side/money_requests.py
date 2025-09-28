@@ -1,9 +1,8 @@
+from website.config import main_url
 import requests
 import json
 import sys
 
-
-main_url = 'http://127.0.0.1:5000/api/'
 time_out = 9
 
 def handle_response(resp: requests.Response):
