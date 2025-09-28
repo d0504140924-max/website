@@ -54,7 +54,7 @@ def main():
             print("Invalid choice")
             continue
 
-        
+
         while True:
             print(f"\n-- {section_name} --")
             for i, (title, _) in enumerate(items, start=1):
