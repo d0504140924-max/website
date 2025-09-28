@@ -26,7 +26,6 @@ SECTIONS = [
 ]
 
 def handle_response(resp):
-    # prefer the existing pretty printers from the modules when available
     if resp is None:
         return
     try:
@@ -55,7 +54,7 @@ def main():
             print("Invalid choice")
             continue
 
-        # section submenu
+        
         while True:
             print(f"\n-- {section_name} --")
             for i, (title, _) in enumerate(items, start=1):
