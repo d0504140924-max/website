@@ -1,16 +1,17 @@
 from abc import ABC, abstractmethod
-from product import Product
+from website.src.product import Product
 from website.src.person import Person
 
 class ManagerAbc(ABC, Person ):
 
 
+
     @abstractmethod
-    def change_price(self, item: Product, new_price):
+    def purchase_item(self, item: dict, num: int=1):
         pass
 
     @abstractmethod
-    def purchase_item(self, item: Product, num: int=1):
+    def change_price(self, item_id: str, new_price):
         pass
 
     @abstractmethod

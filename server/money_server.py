@@ -8,23 +8,23 @@ def register_routes_money(app, executor):
         return ({'ok': True, 'data': data}), 200
 
 
-    @app.post('/api/DepositMoney')
-    def api_deposit_money():
+    @app.post('/api/Deposit')
+    def api_deposit():
         try:
             body = request.get_json(force=True) or {}
             amount = float(body.get('amount', 0))
-            executor.deposit_money(float(amount))
+            executor.deposit(float(amount))
             return {'ok': True}, 200
         except Exception as e:
             return {'ok': False, 'message': str(e)}, 400
 
 
-    @app.post('/api/WithdrawMoney')
-    def api_withdraw_money():
+    @app.post('/api/Withdraw')
+    def api_withdraw():
         try:
             body = request.get_json(force=True) or {}
             amount = float(body.get('amount', 0))
-            executor.withdraw_money(amount)
+            executor.withdraw(amount)
             return {'ok': True}, 200
         except Exception as e:
             return {'ok': False, 'message': str(e)}, 400
@@ -34,7 +34,9 @@ def register_routes_money(app, executor):
         try:
             month = request.args.get('month')
             year = request.args.get('year')
-            data = executor.month_report(int(month), int(year))
+            if not year is None:
+                year = int(year)
+            data = executor.month_report(int(month), year)
             return {'ok': True, 'data': data}, 200
         except Exception as e:
             return {'ok': False, 'message': str(e)}, 400
@@ -42,9 +44,10 @@ def register_routes_money(app, executor):
     @app.get('/api/MovementsRecord')
     def api_movements_record():
         try:
+            _type = request.args.get('type')
             start = request.args.get('start')
             end = request.args.get('end')
-            data = executor.movements_record(start=start, end=end)
+            data = executor.movements_record(_type, start=start, end=end)
             return {'ok': True, 'data': data}, 200
         except Exception as e:
             return {'ok': False, 'message': str(e)}, 400

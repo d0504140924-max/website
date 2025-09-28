@@ -5,6 +5,8 @@ from website.src.money_SQlite import MoneyManage
 from website.src.person import Person
 from website.src.product import Product
 
+
+
 class Manager(ManagerAbc):
 
 
@@ -50,13 +52,11 @@ class Manager(ManagerAbc):
         self.inventory.update_amount(item.id, num)
         self.money.withdraw(item.cost * num)
 
-
     def change_price(self, item_id: str, new_price):
         with sqlite3.connect(self.db_path) as conn:
             cur = conn.cursor()
             cur.execute("UPDATE products SET price = ? WHERE id =?",(new_price, item_id))
-            conn.commit()
-            conn.close()
+
 
     def money_status(self):
         return self.money.current_amount()

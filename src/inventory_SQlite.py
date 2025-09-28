@@ -1,5 +1,6 @@
 from website.src.inventory_interface import InventoryManage
 from website.src.product import Product
+from pathlib import Path
 import sqlite3
 
 
@@ -21,8 +22,8 @@ class TheInventory(InventoryManage):
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS products(
                     id TEXT PRIMARY KEY NOT NULL,
-                    name TEXT NOT NULL,
                     category TEXT NOT NULL,
+                    name TEXT NOT NULL,
                     manufacturer TEXT NOT NULL,
                     price REAL NOT NULL,
                     cost REAL NOT NULL
@@ -59,9 +60,9 @@ class TheInventory(InventoryManage):
         with sqlite3.connect(self.db_path) as conn:
             cur = conn.cursor()
             cur.execute("""
-            INSERT OR IGNORE INTO products (id, name, category, manufacturer,
+            INSERT OR IGNORE INTO products (id, category, name, manufacturer,
                      price, cost) VALUES (?, ?, ?, ?, ?, ?)""",
-                    (item.id, item.name, item.category,
+                    (item.id, item.category, item.name,
                      item.manufacturer, item.price, item.cost))
             cur.execute("""
             INSERT OR IGNORE INTO inventory (product_id, amount) VALUES (?, ?)""",
@@ -119,9 +120,9 @@ class TheInventory(InventoryManage):
         with sqlite3.connect(self.db_path) as conn:
             cur = conn.cursor()
             cur.execute("""
-            SELECT * FROM products WHERE product_id = ?""",(item_id,))
+            SELECT * FROM products WHERE id = ?""",(item_id,))
             _row = cur.fetchone()
-            return _row[0]
+            return _row
 
 
 

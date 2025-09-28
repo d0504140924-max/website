@@ -15,9 +15,9 @@ def handle_response(resp):
     except ValueError:
         print(resp.status_code, resp.text)
 
-def posts(url, payload):
+def posts(url, payload, parameters=None):
     try:
-        return requests.post(f'{main_url}{url}', json=payload, timeout=time_out)
+        return requests.post(f'{main_url}{url}', json=payload,params=parameters, timeout=time_out)
     except requests.exceptions.RequestException as e:
         print(f'post {url} error:', e)
 
@@ -30,18 +30,17 @@ def req_purchase_item():
         "price": input("price: ").strip(),
         "cost": input("cost: ").strip()}
     amount = input("amount: ").strip()
-    payload = {'item': item, 'amount': amount}
-    return posts('PurchaseItem', payload)
+    return posts('PurchaseItem', item, {'amount': amount})
 
 def req_change_price():
     item_id = input("id: ").strip()
     new_price = input("new price: ").strip()
-    payload = {'item': item_id, 'price': new_price}
-    return posts('ChangePrice', payload)
+    parameters = {'item_id': item_id, 'new_price': new_price}
+    return posts('ChangePrice', payload=None, parameters=parameters)
 
 def req_money_status():
     try:
-        return requests.get(f'{main_url}{'MoneyStatus'}',timeout=time_out)
+        return requests.get(f"{main_url}{'MoneyStatus'}",timeout=time_out)
     except requests.exceptions.RequestException as e:
         print(f'get MoneyStatus error:', e)
 
@@ -55,7 +54,7 @@ def main():
     while True:
         print('choose from the menu: ')
         for choice, (title, _) in enumerate(MENU, start=1):
-            print(f'{title}. {choice}')
+            print(f'{choice}. {title}')
         print('choose 0 for exit')
         choice = input('choice: ').strip()
         if choice == '0':

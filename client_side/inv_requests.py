@@ -24,9 +24,9 @@ def gets(path, parameters=None):
     except requests.exceptions.RequestException as e:
         print(f"[GET {path}] Error:", e)
 
-def posts(path, payload=None):
+def posts(path, payload=None, parameters=None):
     try:
-        return  requests.post(f"{base_url}{path}", json=payload, timeout=time_out)
+        return  requests.post(f"{base_url}{path}", json=payload, params=parameters, timeout=time_out)
     except requests.exceptions.RequestException as e:
         print(f"[POST {path}] Error:", e)
 
@@ -36,18 +36,18 @@ def req_show_all():
     return gets("/ShowAll")
 
 def req_show_one_category():
-    category = input("category_name:").strip()
-    return gets("/Category", parameters={"category_name": category})
+    category = input("category:").strip()
+    return gets("/Category", parameters={"category": category})
 
 
 def req_item_details():
-    id = input("item_id:").strip()
-    return gets("/ItemDetails", parameters={"item_id": id})
+    id = input("id:").strip()
+    return gets("/ItemDetails", parameters={"id": id})
 
 
 def req_get_amount():
-    id = input("item_id:").strip()
-    return gets("/GetAmount", parameters={"item_id": id})
+    id = input("id:").strip()
+    return gets("/GetAmount", parameters={"id": id})
 
 
 def req_add_item():
@@ -59,9 +59,8 @@ def req_add_item():
         "price": input("price: ").strip(),
         "cost": input("cost: ").strip()
     }
-    amount = input("amount: ").strip()
-    payload = {'item': item, 'amount': amount}
-    return posts("/AddItem", payload)
+    amount = int(input("amount: ").strip())
+    return posts("/AddItem", item , {'amount': amount})
 
 def req_remove_item():
     id = input("item_id:").strip()

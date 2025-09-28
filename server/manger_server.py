@@ -1,14 +1,19 @@
 from flask import request
 
+from website.src.product import Product
+
+
 def register_routes_manager(app, executor):
 
     @app.post('/api/PurchaseItem')
     def api_purchase_item():
         try:
             body = request.get_json()
-            item = body.get('item')
+            item = Product.from_dict(body)
             amount = request.args.get('amount')
-            executor.purchase_item(item, int(amount))
+            if amount:
+                amount = int(amount)
+            executor.purchase_item(item, amount)
             return {'ok': True}, 200
         except Exception as e:
             return {'ok': False, 'message': str(e)}, 400

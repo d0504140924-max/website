@@ -36,12 +36,12 @@ def req_show_money_status():
 def req_deposit_money():
     amount = input('amount:').strip()
     payload = {'amount': amount}
-    return posts('DepositMoney', payload)
+    return posts('Deposit', payload)
 
 def req_withdraw_money():
     amount = input('amount:').strip()
     payload = {'amount': amount}
-    return posts('WithdrawMoney', payload)
+    return posts('Withdraw', payload)
 
 def req_month_report():
     month = input('month:').strip()
@@ -50,9 +50,10 @@ def req_month_report():
     return gets('MovementRecord', payload)
 
 def req_movements_record():
+    type = input('type:').strip()
     start = input('start:').strip()
     end = input('end:').strip()
-    payload = {'start': start, 'end': end}
+    payload = {'type': type, 'start': start, 'end': end}
     return gets('MovementsRecord', payload)
 
 

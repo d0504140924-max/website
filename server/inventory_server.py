@@ -1,5 +1,6 @@
 from flask import request, jsonify
 
+from website.src.product import Product
 
 
 def register_routes_inv(app, executor):
@@ -21,7 +22,7 @@ def register_routes_inv(app, executor):
         return ({'ok': True, 'data': data}), 200
 
 
-    @app.get("/api/ItemDetail")
+    @app.get("/api/ItemDetails")
     def api_item_detail():
         id = request.args.get('id')
         data = executor.get_item_by_id(id)
@@ -31,11 +32,10 @@ def register_routes_inv(app, executor):
     @app.post('/api/AddItem')
     def api_add_item():
         try:
-            item = request.get_json(force=True) or {}
-            number = request.args.get('number')
-            if not number is None:
-                number = int(number)
-            executor.add_item(item, number)
+            body = request.get_json(force=True) or {}
+            item = Product.from_dict(body)
+            amount = request.args.get('amount', default=1, type=int)
+            executor.add_item(item, amount)
             return jsonify({'ok': True}), 201
         except Exception as e:
             return jsonify({"ok": False, 'Error': str(e)}), 400
@@ -62,7 +62,7 @@ def register_routes_inv(app, executor):
         try:
             id = request.args.get("id")
             new_amount = request.args.get("new_amount")
-            executor.get_item_amount(id, new_amount)
+            executor.update_amount(id, int(new_amount))
             return {"ok": True}, 200
         except Exception as e:
             return jsonify({"ok": False, 'Error': str(e)}), 400

@@ -91,7 +91,7 @@ class Product:
         return cls(id=str(d['id']),
                    category=str(d['category']),
                    name=str(d['name']),
-                   manufacturer=str(d['manufactory']),
+                   manufacturer=str(d['manufacturer']),
                    price=float(d['price']),
                    cost=float(d['cost']))
 
