@@ -17,7 +17,7 @@ class Manager(ManagerAbc):
     def __init__(self, person: Person, inventory: TheInventory,
                  money: MoneyManage, db_path):
         super().__init__(person.id, person.first_name, person.last_name, person.age,
-                        person.birthday, person.phone_number, person.email)
+                    person.phone_number, person.email)
         self.db_path = db_path
         self.inventory = inventory
         self.money = money
@@ -56,7 +56,7 @@ class Manager(ManagerAbc):
         with sqlite3.connect(self.db_path) as conn:
             cur = conn.cursor()
             cur.execute("UPDATE products SET price = ? WHERE id =?",(new_price, item_id))
-
+        conn.commit()
 
     def money_status(self):
         return self.money.current_amount()

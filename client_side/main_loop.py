@@ -1,6 +1,7 @@
 from website.client_side import manager_requests as manager
 from website.client_side import money_requests as money
 from website.client_side import inv_requests as inv
+from website.client_side import people_requests as people
 import sys
 
 SECTIONS = [
@@ -23,6 +24,14 @@ SECTIONS = [
         ("Withdraw money", money.req_withdraw_money),
         ("Movements record", money.req_movements_record),
     ]),
+    ('People', [
+        ('Add user', people.req_add_user),
+        ('Add employee', people.req_add_employee),
+        ('Add manager', people.req_add_manager),
+        ('Remove person', people.req_remove_person),
+        ('Get person', people.req_get_person),
+        ('List people', people.req_list_people)
+    ])
 ]
 
 def handle_response(resp):
